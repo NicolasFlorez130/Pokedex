@@ -1,22 +1,41 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Home from './src/screens/Home/Home';
+import { RootNavigationProps } from './types/navigation';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 import Pokedex from './src/screens/Pokedex/Pokedex';
-import Details from './src/screens/Pokemon/components/Details';
+import Home from './src/screens/Home/Home';
+
+SplashScreen.preventAutoHideAsync();
 
 const BottomTab = createBottomTabNavigator<RootNavigationProps>();
 
-export default function App() {
+const App = () => {
+   const [fontsLoaded] = useFonts({
+      'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+      'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf'),
+   });
+
+   useEffect(() => {
+      fontsLoaded && SplashScreen.hideAsync();
+   }, [fontsLoaded]);
+
    return (
-      <SafeAreaProvider>
-         <NavigationContainer>
-            <BottomTab.Navigator screenOptions={{ headerShown: false }}>
-               <BottomTab.Screen name="Pokedex" component={Pokedex} />
-               <BottomTab.Screen name="Home" component={Home} />
-            </BottomTab.Navigator>
-         </NavigationContainer>
-      </SafeAreaProvider>
+      <>
+         {fontsLoaded && (
+            <SafeAreaProvider>
+               <NavigationContainer>
+                  <BottomTab.Navigator screenOptions={{ headerShown: false }}>
+                     <BottomTab.Screen name="Pokedex" component={Pokedex} />
+                     <BottomTab.Screen name="Home" component={Home} />
+                  </BottomTab.Navigator>
+               </NavigationContainer>
+            </SafeAreaProvider>
+         )}
+      </>
    );
-}
+};
+
+export default App;

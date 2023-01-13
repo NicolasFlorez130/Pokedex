@@ -1,3 +1,5 @@
+import { Pokemon } from 'pokenode-ts';
+
 type RootNavigationProps = {
    Pokedex: undefined;
    Account: undefined;
@@ -14,5 +16,7 @@ type PokemonDescNavigationProps = {
 
 type PokedexNavigationProps = {
    List: undefined;
-   Pokemon: undefined;
+   Pokemon: {
+      data: Pokemon;
+   };
 };
