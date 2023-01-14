@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pokemon, PokemonClient } from 'pokenode-ts';
 import { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, ScrollViewComponent, Text, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { PokedexNavigationProps } from '../../../types/navigation';
 import { Pokemons } from '../../../types/pokemons';
@@ -44,12 +44,15 @@ const List = ({ navigation }: Props) => {
    return (
       <SafeAreaView>
          <FlatList
-            className="m-4"
+            className="m-4 mb=0"
             numColumns={2}
             data={pokemons}
-            keyExtractor={item => String(item.id)}
+            keyExtractor={item => String(item.id + Math.random())}
             renderItem={item => <PokemonCard navigation={navigation} data={item.item} />}
             showsVerticalScrollIndicator={false}
+            onEndReached={getPokemons}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={<ActivityIndicator />}
          />
          {/* <ScrollView>
             {pokemons.map(pokemon => (

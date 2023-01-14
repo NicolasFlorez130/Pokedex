@@ -1,8 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
-import { PokemonClient } from 'pokenode-ts';
-import { useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { PokedexNavigationProps, RootNavigationProps } from '../../../types/navigation';
 import Pokemon from '../Pokemon/Pokemon';
 import List from './List';
 

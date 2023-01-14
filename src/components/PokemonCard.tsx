@@ -4,7 +4,8 @@ import { Pokemon } from 'pokenode-ts';
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { PokedexNavigationProps } from '../../types/navigation';
-// import * as SplashScreen from 'expo-splash-screen';
+import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../utils/pokemon-type-color';
+import TypeChip from './TypeChip';
 
 interface Props {
    data: Pokemon;
@@ -12,25 +13,37 @@ interface Props {
 }
 
 const PokemonCard = ({ data, navigation }: Props) => {
-   // const [fontsLoaded] = useFonts({
-   //    'Poppins-Bold': require('../../assets/fonts/Poppins-Bold.ttf'),
-   // });
-
-   // SplashScreen.preventAutoHideAsync();
-
    const imageUrl = data.sprites.other?.['official-artwork'].front_default ?? '';
 
    return (
       <Pressable
-         className="aspect-[4/3] bg-red-500 flex flex-1 m-2 relative rounded-xl"
+         style={{
+            backgroundColor: POKEMON_TYPE_COLORS[data.types[0].type.name as POKEMON_TYPE_NAMES],
+         }}
+         className="aspect-[4/3] flex flex-1 m-2 overflow-hidden relative rounded-xl"
          onPress={() => navigation.navigate('Pokemon', { data })}>
-         <Text className="capitalize font-poppins-bold ml-4 mt-6 text-lg text-white relative z-10">
+         <Text className="absolute font-poppins-bold opacity-20 right-3 top-2">
+            #{data.id.toString().padStart(3, '0')}
+         </Text>
+         <Text className="capitalize font-poppins-bold ml-3 mt-4 relative text-lg text-white z-20">
             {data.name}
          </Text>
+         <View className="flex">
+            {data.types.map((type, i) => (
+               <TypeChip key={i} name={type.type.name} />
+            ))}
+         </View>
          <Image
-            className="absolute h-3/4 bottom-2 right-2 aspect-square"
+            className="absolute aspect-square bottom-0 h-2/3  right-0 z-10"
             source={{ uri: imageUrl }}
          />
+         <View className="absolute aspect-square bottom-[-10%] h-4/5 opacity-25 right-[-10%]">
+            <Image
+               style={{ resizeMode: 'contain', aspectRatio: 1 / 1 }}
+               className="h-full w-full"
+               source={require('../../src/assets/white-flat-pokeball.png')}
+            />
+         </View>
       </Pressable>
    );
 };
