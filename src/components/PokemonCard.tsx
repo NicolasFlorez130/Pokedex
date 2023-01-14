@@ -20,7 +20,7 @@ const PokemonCard = ({ data, navigation }: Props) => {
          style={{
             backgroundColor: POKEMON_TYPE_COLORS[data.types[0].type.name as POKEMON_TYPE_NAMES],
          }}
-         className="aspect-[4/3] flex flex-1 m-2 overflow-hidden relative rounded-xl"
+         className="aspect-[4/3] flex-1 m-2 overflow-hidden relative rounded-xl"
          onPress={() => navigation.navigate('Pokemon', { data })}>
          <Text className="absolute font-poppins-bold opacity-20 right-3 top-2">
             #{data.id.toString().padStart(3, '0')}
