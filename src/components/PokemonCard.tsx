@@ -28,7 +28,7 @@ const PokemonCard = ({ data, navigation }: Props) => {
          <Text className="capitalize font-poppins-bold ml-3 mt-4 relative text-lg text-white z-20">
             {data.name}
          </Text>
-         <View className="flex">
+         <View className="mx-2 flex-col">
             {data.types.map((type, i) => (
                <TypeChip key={i} name={type.type.name} />
             ))}

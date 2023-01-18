@@ -13,7 +13,7 @@ const api = new PokemonClient();
 
 const List = ({ navigation }: Props) => {
    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-   const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon');
+   const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon?offset=0&limit=50n');
 
    const getPokemons = async () => {
       try {
@@ -51,7 +51,7 @@ const List = ({ navigation }: Props) => {
             renderItem={item => <PokemonCard navigation={navigation} data={item.item} />}
             showsVerticalScrollIndicator={false}
             onEndReached={getPokemons}
-            onEndReachedThreshold={0.5}
+            // onEndReachedThreshold={0.5}
             ListFooterComponent={<ActivityIndicator />}
          />
          {/* <ScrollView>
