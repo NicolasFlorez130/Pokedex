@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import PokemonContextProvider from './context/PokemonContextProvider';
 import Top from './components/Top';
-import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../../utils/pokemon-type-color';
+import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../../utils/pokemon-types';
 import { ScrollView } from 'react-native-gesture-handler';
 
 type Props = NativeStackScreenProps<PokedexNavigationProps, 'Pokemon'>;
@@ -24,8 +24,10 @@ const Pokemon = ({ navigation, route }: Props) => {
                backgroundColor: POKEMON_TYPE_COLORS[data.types[0].type.name as POKEMON_TYPE_NAMES],
             }}
             className="h-full">
-            <Top fav={{ isFav, setIsFav }} />
-            <Details />
+            <ScrollView className="h-screen">
+               <Top fav={{ isFav, setIsFav }} />
+               <Details />
+            </ScrollView>
          </SafeAreaView>
       </PokemonContextProvider>
    );

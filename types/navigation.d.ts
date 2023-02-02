@@ -20,3 +20,9 @@ type PokemonDetailsNavigationProps = {
    Moves: undefined;
    Evolutions: undefined;
 };
+
+type HomeNavigationProps = {
+   Index: undefined;
+   Results: undefined;
+   WIP: undefined;
+};

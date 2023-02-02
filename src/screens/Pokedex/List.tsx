@@ -13,27 +13,32 @@ const api = new PokemonClient();
 
 const List = ({ navigation }: Props) => {
    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-   const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon?offset=0&limit=50n');
+   const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon?offset=0&limit=50');
+   const [isLoading, setIsLoading] = useState(false);
 
    const getPokemons = async () => {
+      if (isLoading) {
+         return;
+      }
+
       try {
+         setIsLoading(true);
+
          const response = await fetch(url);
          const json: Pokemons = await response.json();
-
-         // for await (const result of json.results) {
-         //    const pokemon = await api.getPokemonByName(result.name);
-         //    setPokemons(last => [...last, pokemon]);
-         // }
 
          const newPokemons = await Promise.all(
             json.results.map(result => api.getPokemonByName(result.name))
          );
 
          setPokemons(last => [...last, ...newPokemons]);
+         // setPokemons(last => [...newPokemons]);
 
          setUrl(json.next);
       } catch (error) {
          console.error(error);
+      } finally {
+         setIsLoading(false);
       }
    };
 
@@ -48,17 +53,16 @@ const List = ({ navigation }: Props) => {
             numColumns={2}
             data={pokemons}
             keyExtractor={item => String(item.id + Math.random())}
-            renderItem={item => <PokemonCard navigation={navigation} data={item.item} />}
+            renderItem={item => (
+               <PokemonCard
+                  navigation={() => navigation.navigate('Pokemon', { data: item.item })}
+                  data={item.item}
+               />
+            )}
             showsVerticalScrollIndicator={false}
             onEndReached={getPokemons}
-            // onEndReachedThreshold={0.5}
             ListFooterComponent={<ActivityIndicator />}
          />
-         {/* <ScrollView>
-            {pokemons.map(pokemon => (
-               <PokemonCard data={pokemon} key={pokemon.id} />
-            ))}
-         </ScrollView> */}
       </SafeAreaView>
    );
 };

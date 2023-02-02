@@ -18,7 +18,7 @@ const Evolutions = () => {
 
       setEvolutions(last => [...last, chain]);
 
-      chain.evolves_to.forEach(addEvolution);
+      chain.evolves_to.forEach(chain => addEvolution(chain));
    };
 
    const getEvolutionChains = async () => {

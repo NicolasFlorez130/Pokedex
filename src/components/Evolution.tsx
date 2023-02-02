@@ -12,21 +12,22 @@ interface Props {
 const pokeCli = new PokemonClient();
 
 const Evolution = ({ chain }: Props) => {
-   const [firstPokemon, setFirstPokemon] = useState<Pokemon>();
-   const [secondPokemon, setSecondPokemon] = useState<Pokemon>();
+   const [basePokemon, setBasePokemon] = useState<Pokemon>();
+   const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
 
    const { current: level } = useRef(chain.evolves_to.at(0)?.evolution_details.at(0)?.min_level);
 
    const getPokemons = async () => {
       try {
-         const pokemonNames = [chain.species.name, chain.evolves_to.at(0)?.species.name as string];
+         const evolutionsNames = chain.evolves_to.map(evo => evo.species.name);
 
-         const [first, second] = await Promise.all(
-            pokemonNames.map(name => pokeCli.getPokemonByName(name))
-         );
+         const basePokemonPromise = pokeCli.getPokemonByName(chain.species.name);
+         const evolutionsPromise = evolutionsNames.map(name => pokeCli.getPokemonByName(name));
 
-         setFirstPokemon(first);
-         setSecondPokemon(second);
+         const response = await Promise.all([basePokemonPromise, ...evolutionsPromise]);
+
+         setBasePokemon(response.at(0));
+         setEvolutions(response.slice(1));
       } catch (error) {
          console.error(error);
       }
@@ -38,16 +39,25 @@ const Evolution = ({ chain }: Props) => {
 
    return (
       <>
-         {firstPokemon && secondPokemon && (
-            <View className="flex-row items-center w-full">
-               <Bubble pokemon={firstPokemon} />
+         {evolutions.map((evolution, i) => (
+            <View key={evolution.id} className="flex-row items-center w-full">
+               {basePokemon && <Bubble pokemon={basePokemon} />}
                <View className="flex-col items-center w-1/3">
                   <AntDesign name="arrowright" size={30} color={'rgb(209, 213, 219)'} />
-                  <Text className="font-poppins-bold mt-2">Lvl {level}</Text>
+                  {
+                     <Text className="capitalize font-poppins-bold mt-2">
+                        {chain.evolves_to.at(i)?.evolution_details.at(-1)?.min_level
+                           ? `Lvl ${chain.evolves_to.at(i)?.evolution_details.at(-1)?.min_level}`
+                           : chain.evolves_to
+                                .at(i)
+                                ?.evolution_details.at(-1)
+                                ?.item?.name.replaceAll('-', ' ') ?? 'Unknown'}
+                     </Text>
+                  }
                </View>
-               <Bubble pokemon={secondPokemon} />
+               <Bubble pokemon={evolution} />
             </View>
-         )}
+         ))}
       </>
    );
 };
@@ -79,7 +89,7 @@ const Bubble = ({ pokemon }: { pokemon: Pokemon }) => {
             />
             <Image
                style={{ resizeMode: 'contain' }}
-               className="absolute h-full w-5/6 self-center opacity-10"
+               className="absolute h-full w-5/6 self-center opacity-5"
                source={require('../assets/black-flat-pokeball.png')}
             />
          </View>

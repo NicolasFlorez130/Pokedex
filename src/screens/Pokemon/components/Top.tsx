@@ -19,7 +19,7 @@ const Top = ({ fav }: Props) => {
    const { isFav, setIsFav } = fav;
 
    return (
-      <View className="h-1/2 relative z-10">
+      <View className="h-1/3 relative z-10">
          <View className="absolute bg-white w-1/2 rounded-3xl aspect-square opacity-20 top-[-30%] left-[-25%] rotate-[-20deg]" />
          <View className="absolute bg-white w-1/3 rounded-3xl aspect-square opacity-20 right-0 top-10 rotate-12" />
          <View className="flex-row justify-between m-6">

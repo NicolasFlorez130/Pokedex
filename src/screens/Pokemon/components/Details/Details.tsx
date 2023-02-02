@@ -9,7 +9,7 @@ const Tab = createMaterialTopTabNavigator<PokemonDetailsNavigationProps>();
 
 const Details = () => {
    return (
-      <View className="bg-white h-3/5 rounded-t-[35px] p-6 overflow-visible">
+      <View className="bg-white h-screen rounded-t-[35px] p-6 overflow-visible">
          <Tab.Navigator
             screenOptions={{
                tabBarLabelStyle: {

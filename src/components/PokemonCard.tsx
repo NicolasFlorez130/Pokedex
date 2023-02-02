@@ -4,12 +4,16 @@ import { Pokemon } from 'pokenode-ts';
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { PokedexNavigationProps } from '../../types/navigation';
-import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../utils/pokemon-type-color';
+import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../utils/pokemon-types';
 import TypeChip from './TypeChip';
 
 interface Props {
    data: Pokemon;
-   navigation: NativeStackNavigationProp<PokedexNavigationProps, 'List'>;
+   navigation: () => // screen: string,
+   // params: {
+   //    data: Pokemon;
+   // }
+   void;
 }
 
 const PokemonCard = ({ data, navigation }: Props) => {
@@ -21,7 +25,7 @@ const PokemonCard = ({ data, navigation }: Props) => {
             backgroundColor: POKEMON_TYPE_COLORS[data.types[0].type.name as POKEMON_TYPE_NAMES],
          }}
          className="aspect-[4/3] flex-1 m-2 overflow-hidden relative rounded-xl"
-         onPress={() => navigation.navigate('Pokemon', { data })}>
+         onPress={navigation}>
          <Text className="absolute font-poppins-bold opacity-20 right-3 top-2">
             #{data.id.toString().padStart(3, '0')}
          </Text>
