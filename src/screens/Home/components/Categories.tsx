@@ -1,10 +1,11 @@
 import { FlatList, ScrollView, Text, View, VirtualizedList } from 'react-native';
 import { useContext, useMemo } from 'react';
-import { HomeNavigationContext } from '../context/home-navigation-context';
+import { HomeNavigationContext } from '../context/home-navigation-slice';
 import Category from '../../../components/Category';
 import { POKEMON_TYPE_NAMES } from '../../../utils/pokemon-types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeNavigationProps } from '../../../../types/navigation';
+import Searcher from './Searcher';
 
 interface CategoryType {
    name: string;
@@ -56,9 +57,9 @@ const Categories = ({ navigation }: Props) => {
    );
 
    return (
-      <View className="">
-         <Text className="font-poppins-bold mx-6 text-2xl">Explore</Text>
+      <View>
          <FlatList
+            ListHeaderComponent={<Searcher navigation={navigation} />}
             className="p-6"
             data={categories}
             keyExtractor={item => item.name}

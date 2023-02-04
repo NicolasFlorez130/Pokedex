@@ -29,7 +29,7 @@ const Moves = () => {
          {data?.moves.map((move, i) => (
             <Movement
                key={move.move.name}
-               element={movements.at(i)?.type.name ?? ''}
+               element={movements[i]?.type.name ?? ''}
                learnedAt={move.version_group_details.at(-1)?.level_learned_at ?? 0}
                method={move.version_group_details.at(-1)?.move_learn_method.name ?? ''}
                name={move.move.name}

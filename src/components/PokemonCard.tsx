@@ -1,9 +1,5 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useFonts } from 'expo-font';
 import { Pokemon } from 'pokenode-ts';
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { PokedexNavigationProps } from '../../types/navigation';
 import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../utils/pokemon-types';
 import TypeChip from './TypeChip';
 
@@ -17,7 +13,8 @@ interface Props {
 }
 
 const PokemonCard = ({ data, navigation }: Props) => {
-   const imageUrl = data.sprites.other?.['official-artwork'].front_default ?? '';
+   const imageUrl =
+      data.sprites.other?.['official-artwork'].front_default ?? data.sprites.front_default;
 
    return (
       <Pressable
@@ -37,10 +34,14 @@ const PokemonCard = ({ data, navigation }: Props) => {
                <TypeChip key={i} name={type.type.name} />
             ))}
          </View>
-         <Image
-            className="absolute aspect-square bottom-0 h-2/3  right-0 z-10"
-            source={{ uri: imageUrl }}
-         />
+         <View
+            style={{ opacity: imageUrl ? 1 : 0.6 }}
+            className="absolute aspect-square bottom-0 h-2/3 right-0 z-10">
+            <Image
+               className="h-full w-full"
+               source={imageUrl ? { uri: imageUrl } : require('./../assets/unknown-silhouette.png')}
+            />
+         </View>
          <View className="absolute aspect-square bottom-[-10%] h-4/5 opacity-25 right-[-10%]">
             <Image
                style={{ resizeMode: 'contain', aspectRatio: 1 / 1 }}

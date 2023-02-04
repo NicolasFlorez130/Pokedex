@@ -1,6 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
-import React, { useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { Image, Text, View } from 'react-native';
+import { From } from '../../../../types/navigation';
 import TypeChip from '../../../components/TypeChip';
 import { PokemonScreenNavigationContext } from '../context/navigation-slice';
 import { PokemonDataContext } from '../context/pokemon-data-slice';
@@ -10,25 +12,35 @@ interface Props {
       isFav: boolean;
       setIsFav: React.Dispatch<React.SetStateAction<boolean>>;
    };
+   from: From;
 }
 
-const Top = ({ fav }: Props) => {
+const Top = ({ fav, from }: Props) => {
    const navigation = useContext(PokemonScreenNavigationContext);
    const data = useContext(PokemonDataContext);
 
+   const rootNav = useNavigation() as any;
+
    const { isFav, setIsFav } = fav;
+
+   const nav = useCallback(() => {
+      navigation?.navigate('List');
+
+      if (from === 'results') {
+         rootNav.navigate('Home');
+      }
+   }, [from]);
+
+   useEffect(() => {
+      console.log('from');
+   }, [from]);
 
    return (
       <View className="h-1/3 relative z-10">
          <View className="absolute bg-white w-1/2 rounded-3xl aspect-square opacity-20 top-[-30%] left-[-25%] rotate-[-20deg]" />
          <View className="absolute bg-white w-1/3 rounded-3xl aspect-square opacity-20 right-0 top-10 rotate-12" />
          <View className="flex-row justify-between m-6">
-            <AntDesign
-               onPress={navigation?.goBack}
-               name="arrowleft"
-               color="white"
-               size={30}
-            />
+            <AntDesign onPress={nav} name="arrowleft" color="white" size={30} />
             <AntDesign
                onPress={() => setIsFav(last => !last)}
                name={isFav ? 'heart' : 'hearto'}

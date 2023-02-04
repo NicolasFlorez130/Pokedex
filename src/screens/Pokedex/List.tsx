@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pokemon, PokemonClient } from 'pokenode-ts';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView } from 'react-native';
+import { ActivityIndicator, SafeAreaView, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { PokedexNavigationProps } from '../../../types/navigation';
 import { Pokemons } from '../../../types/pokemons';
@@ -55,7 +55,9 @@ const List = ({ navigation }: Props) => {
             keyExtractor={item => String(item.id + Math.random())}
             renderItem={item => (
                <PokemonCard
-                  navigation={() => navigation.navigate('Pokemon', { data: item.item })}
+                  navigation={() =>
+                     navigation.navigate('Pokemon', { data: item.item, from: 'pokedex' })
+                  }
                   data={item.item}
                />
             )}

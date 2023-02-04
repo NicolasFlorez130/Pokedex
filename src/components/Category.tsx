@@ -9,13 +9,11 @@ interface Props {
 }
 
 const Category = ({ name, navigate, color, index }: Props) => {
-   const marginLeft = index ? (index % 2 ? 20 : 0) : 0;
-
    return (
       <Pressable
          style={{
             backgroundColor: POKEMON_TYPE_COLORS[color],
-            marginLeft,
+            marginLeft: index ? (index % 2 ? 20 : 0) : 0,
             marginBottom: index ? 20 : 0,
             shadowColor: POKEMON_TYPE_COLORS[color],
          }}

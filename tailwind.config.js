@@ -8,6 +8,9 @@ module.exports = {
             'poppins-black': 'Poppins-Black',
             'poppins-medium': 'Poppins-Medium',
             'poppins-light': 'Poppins-Light'
+         },
+         colors: {
+            'wip-page-bg': '#F5F5F5'
          }
       },
    },

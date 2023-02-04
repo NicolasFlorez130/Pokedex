@@ -4,6 +4,7 @@ import { ChainLink, Pokemon, PokemonClient } from 'pokenode-ts';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { RootNavigationProps } from '../../types/navigation';
+import { FromContext } from '../screens/Pokemon/context/from-slice';
 
 interface Props {
    chain: ChainLink;
@@ -14,8 +15,6 @@ const pokeCli = new PokemonClient();
 const Evolution = ({ chain }: Props) => {
    const [basePokemon, setBasePokemon] = useState<Pokemon>();
    const [evolutions, setEvolutions] = useState<Pokemon[]>([]);
-
-   const { current: level } = useRef(chain.evolves_to.at(0)?.evolution_details.at(0)?.min_level);
 
    const getPokemons = async () => {
       try {
@@ -64,16 +63,14 @@ const Evolution = ({ chain }: Props) => {
 
 const Bubble = ({ pokemon }: { pokemon: Pokemon }) => {
    const navigation = useContext(NavigationContext);
+   const from = useContext(FromContext);
 
    const navigate = () => {
-      if (!navigate) {
-         return;
-      }
-
       navigation?.navigate('Pokedex', {
          screen: 'Pokemon',
          params: {
             data: pokemon,
+            from,
          },
       });
 

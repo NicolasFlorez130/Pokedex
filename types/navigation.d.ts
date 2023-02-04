@@ -1,16 +1,20 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { Pokemon } from 'pokenode-ts';
 
 type RootNavigationProps = {
-   Pokedex: undefined;
+   Pokedex: NavigatorScreenParams<PokedexNavigationProps>;
    Account: undefined;
    Favorites: undefined;
    Home: undefined;
 };
 
+export type From = 'results' | 'pokedex';
+
 type PokedexNavigationProps = {
    List: undefined;
    Pokemon: {
       data: Pokemon;
+      from: From;
    };
 };
 
@@ -23,6 +27,8 @@ type PokemonDetailsNavigationProps = {
 
 type HomeNavigationProps = {
    Index: undefined;
-   Results: undefined;
+   Results: {
+      query: string;
+   };
    WIP: undefined;
 };
