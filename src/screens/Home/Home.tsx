@@ -1,6 +1,6 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeNavigationProps, RootNavigationProps } from '../../../types/navigation';
+import { HomeNavigationProps, AppNavigationProps } from '../../../types/navigation';
 import Results from '../Results/Results';
 import WIP from '../WIP/WIP';
 import { HomeNavigationContext } from './context/home-navigation-slice';
@@ -8,7 +8,7 @@ import Index from './Index';
 
 const TabNavigator = createStackNavigator<HomeNavigationProps>();
 
-type Props = BottomTabScreenProps<RootNavigationProps, 'Home'>;
+type Props = BottomTabScreenProps<AppNavigationProps, 'Home'>;
 
 const Home = ({ navigation }: Props) => {
    return (

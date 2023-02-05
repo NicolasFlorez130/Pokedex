@@ -1,18 +1,17 @@
 import { Pokemon } from 'pokenode-ts';
+import { useContext } from 'react';
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native';
+import { RootNavigationContext } from '../global/context/root-navigation-slice';
 import { POKEMON_TYPE_COLORS, POKEMON_TYPE_NAMES } from '../utils/pokemon-types';
 import TypeChip from './TypeChip';
 
 interface Props {
    data: Pokemon;
-   navigation: () => // screen: string,
-   // params: {
-   //    data: Pokemon;
-   // }
-   void;
 }
 
-const PokemonCard = ({ data, navigation }: Props) => {
+const PokemonCard = ({ data }: Props) => {
+   const navigation = useContext(RootNavigationContext);
+
    const imageUrl =
       data.sprites.other?.['official-artwork'].front_default ?? data.sprites.front_default;
 
@@ -22,7 +21,7 @@ const PokemonCard = ({ data, navigation }: Props) => {
             backgroundColor: POKEMON_TYPE_COLORS[data.types[0].type.name as POKEMON_TYPE_NAMES],
          }}
          className="aspect-[4/3] flex-1 m-2 overflow-hidden relative rounded-xl"
-         onPress={navigation}>
+         onPress={() => navigation?.navigate('Pokemon', { data }) ?? null}>
          <Text className="absolute font-poppins-bold opacity-20 right-3 top-2">
             #{data.id.toString().padStart(3, '0')}
          </Text>

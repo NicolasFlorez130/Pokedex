@@ -1,6 +1,5 @@
 import { Move, MoveClient } from 'pokenode-ts';
 import { useContext, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Movement from '../../../../components/Movement';
 import { PokemonDataContext } from '../../context/pokemon-data-slice';
@@ -25,16 +24,17 @@ const Moves = () => {
    }, [data]);
 
    return (
-      <ScrollView className="bg-white" showsVerticalScrollIndicator={false}>
-         {data?.moves.map((move, i) => (
-            <Movement
-               key={move.move.name}
-               element={movements[i]?.type.name ?? ''}
-               learnedAt={move.version_group_details.at(-1)?.level_learned_at ?? 0}
-               method={move.version_group_details.at(-1)?.move_learn_method.name ?? ''}
-               name={move.move.name}
-            />
-         ))}
+      <ScrollView className="bg-white">
+         {data &&
+            data.moves.map((move, i) => (
+               <Movement
+                  key={move.move.name}
+                  element={movements[i]?.type.name ?? ''}
+                  learnedAt={move.version_group_details.at(-1)?.level_learned_at ?? 0}
+                  method={move.version_group_details.at(-1)?.move_learn_method.name ?? ''}
+                  name={move.move.name}
+               />
+            ))}
       </ScrollView>
    );
 };

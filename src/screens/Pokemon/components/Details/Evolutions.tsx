@@ -1,4 +1,10 @@
-import { ChainLink, EvolutionChain, EvolutionClient, PokemonClient } from 'pokenode-ts';
+import {
+   ChainLink,
+   EvolutionChain,
+   EvolutionClient,
+   PokemonClient,
+   PokemonSpecies,
+} from 'pokenode-ts';
 import { useContext, useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Evolution from '../../../../components/Evolution';
@@ -10,6 +16,7 @@ const pokeCli = new PokemonClient();
 const Evolutions = () => {
    const data = useContext(PokemonDataContext);
    const [evolutions, setEvolutions] = useState<ChainLink[]>([]);
+   const [species, setSpecies] = useState<PokemonSpecies>();
 
    const addEvolution = (chain: ChainLink | undefined) => {
       if (!chain || !chain.evolves_to.length) {
@@ -24,6 +31,8 @@ const Evolutions = () => {
    const getEvolutionChains = async () => {
       try {
          const specie = await pokeCli.getPokemonSpeciesById(data?.id as number);
+
+         setSpecies(specie);
 
          const chain = await evoCli.getEvolutionChainById(
             parseInt(specie.evolution_chain.url.split('/').at(-2) as string)
@@ -40,9 +49,9 @@ const Evolutions = () => {
    }, []);
 
    return (
-      <ScrollView showsVerticalScrollIndicator={false} className="bg-white py-4">
-         <View className="mb-20">
-            <Text className="font-poppins-bold my-2 text-lg">Evolution Chain</Text>
+      <ScrollView className="bg-white h-full pt-4">
+         <Text className="font-poppins-bold text-lg">Evolution Chain</Text>
+         <View className="h-full">
             {evolutions.map((evolution, i) => (
                <View key={i} className="my-2">
                   <Evolution chain={evolution} />

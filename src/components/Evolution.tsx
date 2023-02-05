@@ -3,8 +3,8 @@ import { NavigationContext } from '@react-navigation/native';
 import { ChainLink, Pokemon, PokemonClient } from 'pokenode-ts';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
-import { RootNavigationProps } from '../../types/navigation';
-import { FromContext } from '../screens/Pokemon/context/from-slice';
+import { AppNavigationProps } from '../../types/navigation';
+import { RootNavigationContext } from '../global/context/root-navigation-slice';
 
 interface Props {
    chain: ChainLink;
@@ -62,19 +62,16 @@ const Evolution = ({ chain }: Props) => {
 };
 
 const Bubble = ({ pokemon }: { pokemon: Pokemon }) => {
-   const navigation = useContext(NavigationContext);
-   const from = useContext(FromContext);
+   const navigation = useContext(RootNavigationContext);
+
+   const relativeNav = useContext(NavigationContext);
 
    const navigate = () => {
-      navigation?.navigate('Pokedex', {
-         screen: 'Pokemon',
-         params: {
-            data: pokemon,
-            from,
-         },
+      navigation?.navigate('Pokemon', {
+         data: pokemon,
       });
 
-      navigation?.navigate('BaseStats');
+      relativeNav?.navigate('BaseStats');
    };
 
    return (

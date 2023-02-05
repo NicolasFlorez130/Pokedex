@@ -1,3 +1,3 @@
-export enum keys {
-   Favorites,
-}
+export const keys = {
+   favorites: 'favorites',
+};

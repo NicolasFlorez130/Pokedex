@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { PokemonDetailsNavigationProps } from '../../../../../types/navigation';
 import BaseStats from './BaseStats';
 import Evolutions from './Evolutions';
@@ -9,14 +9,14 @@ const Tab = createMaterialTopTabNavigator<PokemonDetailsNavigationProps>();
 
 const Details = () => {
    return (
-      <View className="bg-white h-screen rounded-t-[35px] p-6 overflow-visible">
+      <View className="bg-white h-3/5 rounded-[35px] p-6 overflow-visible">
          <Tab.Navigator
             screenOptions={{
                tabBarLabelStyle: {
                   textTransform: 'capitalize',
                   fontSize: 14,
                   fontFamily: 'Poppins-Bold',
-               }
+               },
             }}>
             <Tab.Screen
                options={{ tabBarLabel: 'Base Stats' }}

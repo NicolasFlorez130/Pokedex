@@ -1,48 +1,72 @@
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect } from 'react';
+import { Pokemon } from 'pokenode-ts';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
 import { From } from '../../../../types/navigation';
 import TypeChip from '../../../components/TypeChip';
-import { PokemonScreenNavigationContext } from '../context/navigation-slice';
+import { RootNavigationContext } from '../../../global/context/root-navigation-slice';
+import { keys } from '../../../utils/keys';
 import { PokemonDataContext } from '../context/pokemon-data-slice';
 
-interface Props {
-   fav: {
-      isFav: boolean;
-      setIsFav: React.Dispatch<React.SetStateAction<boolean>>;
-   };
-   from: From;
-}
-
-const Top = ({ fav, from }: Props) => {
-   const navigation = useContext(PokemonScreenNavigationContext);
+const Top = () => {
+   const navigation = useContext(RootNavigationContext);
    const data = useContext(PokemonDataContext);
 
-   const rootNav = useNavigation() as any;
+   const [isFav, setIsFav] = useState(false);
 
-   const { isFav, setIsFav } = fav;
-
-   const nav = useCallback(() => {
-      navigation?.navigate('List');
-
-      if (from === 'results') {
-         rootNav.navigate('Home');
+   const detectFav = async () => {
+      const string = await AsyncStorage.getItem(keys.favorites);
+      if (!string) {
+         return;
       }
-   }, [from]);
+      const favorites: Pokemon[] = JSON.parse(string) ?? [];
+
+      setIsFav(favorites.findIndex(el => el.id === data?.id) >= 0);
+   };
+
+   const toggleFav = async () => {
+      const string = await AsyncStorage.getItem(keys.favorites);
+      const favorites: Pokemon[] = string ? JSON.parse(string) : [];
+      const id = favorites.findIndex(el => el.id === data?.id);
+
+      if (id >= 0) {
+         const aux = [...favorites];
+
+         aux.splice(id, 1);
+
+         await AsyncStorage.setItem(keys.favorites, JSON.stringify(aux));
+
+         setIsFav(false);
+      } else {
+         await AsyncStorage.setItem(keys.favorites, JSON.stringify([...favorites, data]));
+
+         setIsFav(true);
+      }
+   };
 
    useEffect(() => {
-      console.log('from');
-   }, [from]);
+      detectFav();
+   }, []);
+
+   useEffect(() => {
+      detectFav();
+   }, [data]);
 
    return (
-      <View className="h-1/3 relative z-10">
+      <View className="h-2/5 relative z-10">
          <View className="absolute bg-white w-1/2 rounded-3xl aspect-square opacity-20 top-[-30%] left-[-25%] rotate-[-20deg]" />
          <View className="absolute bg-white w-1/3 rounded-3xl aspect-square opacity-20 right-0 top-10 rotate-12" />
          <View className="flex-row justify-between m-6">
-            <AntDesign onPress={nav} name="arrowleft" color="white" size={30} />
             <AntDesign
-               onPress={() => setIsFav(last => !last)}
+               onPress={() => navigation?.navigate('App')}
+               name="arrowleft"
+               color="white"
+               size={30}
+            />
+            <AntDesign
+               onPress={toggleFav}
                name={isFav ? 'heart' : 'hearto'}
                color="white"
                size={30}

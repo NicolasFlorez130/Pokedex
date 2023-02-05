@@ -1,24 +1,20 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { Pokemon } from 'pokenode-ts';
-import { From, PokedexNavigationProps } from '../../../../types/navigation';
-import { FromContext } from './from-slice';
-import { PokemonScreenNavigationContext } from './navigation-slice';
+import { RootNavigationProps } from '../../../../types/navigation';
+import { RootNavigationContext } from '../../../global/context/root-navigation-slice';
 import { PokemonDataContext } from './pokemon-data-slice';
 
 interface Props {
    children: any;
-   navigation: NativeStackNavigationProp<PokedexNavigationProps, 'Pokemon'>;
+   navigation: StackNavigationProp<RootNavigationProps, 'Pokemon'>;
    pokemon: Pokemon;
-   from: From;
 }
 
-const PokemonContextProvider = ({ children, navigation, pokemon, from }: Props) => {
+const PokemonContextProvider = ({ children, navigation, pokemon }: Props) => {
    return (
-      <PokemonScreenNavigationContext.Provider value={navigation}>
-         <FromContext.Provider value={from}>
-            <PokemonDataContext.Provider value={pokemon}>{children}</PokemonDataContext.Provider>
-         </FromContext.Provider>
-      </PokemonScreenNavigationContext.Provider>
+      <RootNavigationContext.Provider value={navigation}>
+         <PokemonDataContext.Provider value={pokemon}>{children}</PokemonDataContext.Provider>
+      </RootNavigationContext.Provider>
    );
 };
 

@@ -60,7 +60,7 @@ const Categories = ({ navigation }: Props) => {
       <View>
          <FlatList
             ListHeaderComponent={<Searcher navigation={navigation} />}
-            className="p-6"
+            className="px-6 pb-1"
             data={categories}
             keyExtractor={item => item.name}
             renderItem={({ item, index }) => <Category {...item} index={index} />}

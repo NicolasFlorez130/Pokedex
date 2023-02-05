@@ -1,9 +1,9 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createContext } from 'react';
-import { HomeNavigationProps, RootNavigationProps } from '../../../../types/navigation';
+import { HomeNavigationProps, AppNavigationProps } from '../../../../types/navigation';
 
 export const HomeNavigationContext = createContext<BottomTabNavigationProp<
-   RootNavigationProps,
+   AppNavigationProps,
    'Home'
 > | null>(null);
